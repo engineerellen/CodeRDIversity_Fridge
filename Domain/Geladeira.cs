@@ -1,69 +1,105 @@
-﻿namespace Domain
+﻿using System.Buffers;
+using System.Drawing;
+
+namespace Domain
 {
-    public class Geladeira
+    public sealed class Geladeira
     {
-        private Stack<Dictionary<int, string[]>> andares;
+        private Stack<Andar> _Andares;
 
-        public Geladeira()
+        public Geladeira(int numAndares = 3)
         {
-            andares = new Stack<Dictionary<int, string[]>>();
+            _Andares = new Stack<Andar>();
 
-            // Floor 2 - Charcutaria, Carnes e Ovos
-            andares.Push(new Dictionary<int, string[]> {
-            { 0, new string[4] }, // Container 0
-            { 1, new string[4] }  // Container 1
-        });
-
-            // Floor 1 - Laticínios e Enlatados
-            andares.Push(new Dictionary<int, string[]> {
-            { 0, new string[4] }, // Container 0
-            { 1, new string[4] }  // Container 1
-        });
-
-            // Floor 0 - Hortifrutis
-            andares.Push(new Dictionary<int, string[]> {
-            { 0, new string[4] }, // Container 0
-            { 1, new string[4] }  // Container 1
-        });
+            for (int i = 0; i < numAndares; i++)
+                _Andares.Push(new Andar(i));
         }
 
-        public void InserirItem(int piso, int gaveta, int posicao, string item)
+        private Andar[] RetornarAndares(int numAndar)
         {
-            var arrPisos = andares.ToArray();
+            var arrAndares = _Andares.ToArray();
 
-            if (piso < 0 || piso >= arrPisos.Length || !arrPisos[piso].ContainsKey(gaveta))
+            Validarandares(numAndar, arrAndares);
+
+            return arrAndares;
+        }
+
+        private static void Validarandares(int numAndar, Andar[] arrAndares)
+        {
+            if (numAndar < 0 || numAndar >= arrAndares.Length)
+                throw new Exception("Numero do andar inválido!");
+        }
+
+        private static Container? RetornarContainer(int numAndar, int numContainer, Andar[] arrAndares)
+        {
+            Validarandares(numAndar, arrAndares);
+
+            var container = arrAndares[numAndar].RetornarContainer(numContainer);
+            return container;
+        }
+
+        public void AdicionarItem(int numAndar, int numContainer, int posicao, Item item)
+        {
+            var arrAndares = RetornarAndares(numAndar);
+
+            Container? container = RetornarContainer(numAndar, numContainer, arrAndares);
+
+            if (container == null)
+                throw new Exception("Numero do container inválido!");
+
+            container.AdicionarItem(posicao, item);
+        }
+
+
+        public void RemoverItem(int numAndar, int numContainer, int posicao)
+        {
+            var arrAndares = RetornarAndares(numAndar);
+
+            Container? container = RetornarContainer(numAndar, numContainer, arrAndares);
+
+            container?.RetornarItem(posicao);
+        }
+
+        public void LimparContainer(int numAndar, int numContainer)
+        {
+            var arrAndares = RetornarAndares(numAndar);
+
+            Container? container = RetornarContainer(numAndar, numContainer, arrAndares);
+
+            if (!Convert.ToBoolean(container?.EstaVazio()))
             {
-                Console.WriteLine("Andar ou gaveta invalidos.");
+                container?.LimparContainer();
+            }
+            else
+            {
+                Console.WriteLine("Container está vazio!");
+                return;
+            }
+        }
+
+        public void AddItensAoContainer(int numAndar, int numContainer, List<Item> itens)
+        {
+            var arrAndares = RetornarAndares(numAndar);
+
+            Container? container = RetornarContainer(numAndar, numContainer, arrAndares);
+
+            if (!Convert.ToBoolean(container?.EstaCheio()))
+                container?.AdicionarItens(itens);
+            else
+            {
+                Console.WriteLine("Container já está cheio!");
                 return;
             }
 
-            if (posicao < 0 || posicao >= arrPisos[piso][gaveta].Length)
-            {
-                Console.WriteLine("posiçao invalida");
-                return;
-            }
-
-            arrPisos[piso][gaveta][posicao] = item;
         }
 
-        public void MostraItens()
+        public void ImprimeConteudo()
         {
-            var arrAndares = andares.ToArray();
-            for (int piso = 0; piso < arrAndares.Length; piso++)
+            var arrAndares = _Andares.ToArray();
+
+            for (int i = arrAndares.Length - 1; i >= 0; i--)
             {
-                Console.WriteLine($"Andar {piso}:");
-                foreach (var gaveta in arrAndares[piso])
-                {
-                    Console.WriteLine($"  Container {gaveta.Key}:");
-                    for (int pos = 0; pos < gaveta.Value.Length; pos++)
-                    {
-                        string item = gaveta.Value[pos];
-                        if (!string.IsNullOrEmpty(item))
-                        {
-                            Console.WriteLine($"    Posição {pos}: {item}");
-                        }
-                    }
-                }
+                arrAndares[i].ImprimirItens();
             }
         }
     }
