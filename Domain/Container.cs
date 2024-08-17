@@ -7,12 +7,12 @@
 
         public int NumeroContainer { get; private set; }
 
-        public Container(int numContainer, int qtdePosicoes = itemsLength)
+        public Container(int numContainer)
         {
             NumeroContainer = numContainer;
             _items = new List<Item>();
 
-            ResetarItens(qtdePosicoes);
+            ResetarItens(itemsLength);
         }
 
         private void ResetarItens(int qtdePosicoes)

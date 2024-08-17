@@ -5,8 +5,8 @@
         private readonly List<Container> _containers;
 
         public int NumeroAndar { get; private set; }
-
-        public Andar(int numAndar, int numContainers = 2)
+        private const int numContainers = 2;
+        public Andar(int numAndar)
         {
             NumeroAndar = numAndar;
             _containers = new List<Container>();

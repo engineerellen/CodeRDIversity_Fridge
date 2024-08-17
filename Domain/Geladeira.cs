@@ -7,7 +7,9 @@ namespace Domain
     {
         private Stack<Andar> _Andares;
 
-        public Geladeira(int numAndares = 3)
+        private const int numAndares = 3;
+
+        public Geladeira()
         {
             _Andares = new Stack<Andar>();
 
@@ -15,26 +17,26 @@ namespace Domain
                 _Andares.Push(new Andar(i));
         }
 
-        private Andar[] RetornarAndares(int numAndar)
+        private List<Andar> RetornarAndares(int numAndar)
         {
-            var arrAndares = _Andares.ToArray();
+            var lstAndares = _Andares.ToList();
 
-            Validarandares(numAndar, arrAndares);
+            Validarandares(numAndar, lstAndares);
 
-            return arrAndares;
+            return lstAndares;
         }
 
-        private static void Validarandares(int numAndar, Andar[] arrAndares)
+        private static void Validarandares(int numAndar, List<Andar> lstAndares)
         {
-            if (numAndar < 0 || numAndar >= arrAndares.Length)
+            if (numAndar < 0 || numAndar >= lstAndares.Count)
                 throw new Exception("Numero do andar inválido!");
         }
 
-        private static Container? RetornarContainer(int numAndar, int numContainer, Andar[] arrAndares)
+        private static Container? RetornarContainer(int numAndar, int numContainer, List<Andar> lstAndares)
         {
-            Validarandares(numAndar, arrAndares);
+            Validarandares(numAndar, lstAndares);
 
-            var container = arrAndares[numAndar].RetornarContainer(numContainer);
+            var container = lstAndares[numAndar].RetornarContainer(numContainer);
             return container;
         }
 
@@ -95,12 +97,10 @@ namespace Domain
 
         public void ImprimeConteudo()
         {
-            var arrAndares = _Andares.ToArray();
+            var lstAndares = _Andares.ToList();
 
-            for (int i = arrAndares.Length - 1; i >= 0; i--)
-            {
-                arrAndares[i].ImprimirItens();
-            }
+            foreach (var andar in lstAndares)
+                andar.ImprimirItens();
         }
     }
 }
