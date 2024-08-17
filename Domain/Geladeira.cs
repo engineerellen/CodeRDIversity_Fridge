@@ -7,14 +7,15 @@ namespace Domain
     {
         private Stack<Andar> _Andares;
 
-        private const int numAndares = 3;
+        // private const int numAndares = 3;
 
         public Geladeira()
         {
             _Andares = new Stack<Andar>();
 
-            for (int i = 0; i < numAndares; i++)
-                _Andares.Push(new Andar(i));
+            _Andares.Push(new Andar(0, "Charcutaria, Carnes e Ovos"));
+            _Andares.Push(new Andar(1, "Laticínios e Enlatados"));
+            _Andares.Push(new Andar(2, "Frutas e Verduras"));
         }
 
         private List<Andar> RetornarAndares(int numAndar)
