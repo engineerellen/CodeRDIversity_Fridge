@@ -1,6 +1,4 @@
-﻿using System.Buffers;
-using System.Drawing;
-using System.Text;
+﻿using System.Text;
 
 namespace Domain
 {
@@ -40,7 +38,7 @@ namespace Domain
             return container;
         }
 
-        public string AdicionarItem(int numAndar, int numContainer, int posicao, Item item)
+        public void AdicionarItem(int numAndar, int numContainer, int posicao, Item item)
         {
             var arrAndares = RetornarAndares(numAndar);
 
@@ -49,20 +47,20 @@ namespace Domain
             if (container == null)
                 throw new Exception("Numero do container inválido!");
 
-            return container.AdicionarItem(posicao, item);
+            container.AdicionarItem(posicao, item);
         }
 
 
-        public string RemoverItem(int numAndar, int numContainer, int posicao)
+        public void RemoverItem(int numAndar, int numContainer, int posicao)
         {
             var arrAndares = RetornarAndares(numAndar);
 
             Container? container = RetornarContainer(numAndar, numContainer, arrAndares);
 
-            return container?.RemoverItem(posicao) ?? $"Não foi possível remover o item {posicao}";
+            container?.RemoverItem(posicao);
         }
 
-        public string LimparContainer(int numAndar, int numContainer)
+        public void LimparContainer(int numAndar, int numContainer)
         {
             var arrAndares = RetornarAndares(numAndar);
 
@@ -71,13 +69,10 @@ namespace Domain
             if (!Convert.ToBoolean(container?.EstaVazio()))
                 container?.LimparContainer();
             else
-                return "Container está vazio!";
-
-            return "Container esvaziado com sucesso!";
-
+                throw new Exception("Container está vazio!");
         }
 
-        public string AddItensAoContainer(int numAndar, int numContainer, List<Item> itens)
+        public void AddItensAoContainer(int numAndar, int numContainer, List<Item> itens)
         {
             var arrAndares = RetornarAndares(numAndar);
 
@@ -86,9 +81,8 @@ namespace Domain
             if (!Convert.ToBoolean(container?.EstaCheio()))
                 container?.AdicionarItens(itens);
             else
-                return "Container já está cheio!";
+                throw new Exception("Container já está cheio!");
 
-            return "Itens adicionados ao Container com sucesso!";
         }
 
         public string ImprimeConteudo()

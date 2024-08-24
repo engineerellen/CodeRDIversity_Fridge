@@ -27,16 +27,14 @@
                 throw new Exception("Posição inválida!");
         }
 
-        public string AdicionarItem(int posicao, Item item)
+        public void AdicionarItem(int posicao, Item item)
         {
             ValidarPosicaoItem(posicao);
 
             if (_items[posicao] != null && _items[posicao].ID != null)
-                return $"Posicao {posicao} já esta preenchida!";
+                throw new Exception($"Posicao {posicao} já esta preenchida!");
 
             _items[posicao] = item;
-
-            return $"Item {item.Descricao} adicionado com sucesso!";
         }
 
         public Item? RetornarItem(int posicao)
@@ -47,17 +45,14 @@
         }
 
 
-        public string RemoverItem(int posicao)
+        public void RemoverItem(int posicao)
         {
             ValidarPosicaoItem(posicao);
 
             if (_items[posicao] != null && _items[posicao].ID == null)
-            {
-                return $"Posição {posicao} já está vazia";
-            }
+                throw new Exception($"Posição {posicao} já está vazia");
+           
             _items[posicao] = new Item();
-
-            return "Item removido com sucesso!";
         }
 
         public bool EstaCheio()
@@ -67,7 +62,6 @@
                 if (item == null)
                     return false;
             }
-
             return true;
         }
 
@@ -84,10 +78,10 @@
 
         public void LimparContainer() => ResetarItens(itemsLength);
 
-        public string AdicionarItens(List<Item> itens)
+        public void AdicionarItens(List<Item> itens)
         {
             if (itens.Count > _items.Count)
-                return "Quantidade de itens ultrapassa o limite permitido!";
+                throw new Exception("Quantidade de itens ultrapassa o limite permitido!");
 
             int posicao = 0;
             foreach (var item in itens)
@@ -99,10 +93,8 @@
                     _items[posicao] = item;
 
                 else
-                    return "Container está cheio! Não é permitido incluir itens no momento!";
+                    throw new Exception("Container está cheio! Não é permitido incluir itens no momento!");
             }
-
-            return "Itens adicionados com sucesso!";
         }
 
         public string ImprimirItens()
