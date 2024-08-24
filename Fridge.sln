@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewConsole", "ViewConsole\ViewConsole.csproj", "{6CC85416-B2B7-4F1C-B036-E0F46C5E7A43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{D769DFD0-2A7A-4D99-9838-84AD06C3B05F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{D769DFD0-2A7A-4D99-9838-84AD06C3B05F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeladeiraAPI", "GeladeiraAPI\GeladeiraAPI.csproj", "{7FB91C43-F89C-468C-9BF6-B1355C85DD50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D769DFD0-2A7A-4D99-9838-84AD06C3B05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D769DFD0-2A7A-4D99-9838-84AD06C3B05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D769DFD0-2A7A-4D99-9838-84AD06C3B05F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FB91C43-F89C-468C-9BF6-B1355C85DD50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB91C43-F89C-468C-9BF6-B1355C85DD50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB91C43-F89C-468C-9BF6-B1355C85DD50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB91C43-F89C-468C-9BF6-B1355C85DD50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

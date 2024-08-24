@@ -22,12 +22,14 @@
         public Container? RetornarContainer(int numContainer) =>
             _containers?.Find(container => container?.NumeroContainer == numContainer);
 
-        public void ImprimirItens()
+        public string ImprimirItens()
         {
-            Console.WriteLine($"Andar {NumeroAndar}:");
+            string retorno = $"Andar {NumeroAndar}:";
 
             foreach (var container in _containers)
-                container.ImprimirItens();
+               retorno += container.ImprimirItens();
+
+            return retorno;
         }
     }
 }

@@ -27,16 +27,16 @@
                 throw new Exception("Posição inválida!");
         }
 
-        public void AdicionarItem(int posicao, Item item)
+        public string AdicionarItem(int posicao, Item item)
         {
             ValidarPosicaoItem(posicao);
 
             if (_items[posicao] != null && _items[posicao].ID != null)
-            {
-                Console.WriteLine($"Posicao {posicao} já esta preenchida!");
-                return;
-            }
+                return $"Posicao {posicao} já esta preenchida!";
+
             _items[posicao] = item;
+
+            return $"Item {item.Descricao} adicionado com sucesso!";
         }
 
         public Item? RetornarItem(int posicao)
@@ -47,16 +47,17 @@
         }
 
 
-        public void RemoverItem(int posicao)
+        public string RemoverItem(int posicao)
         {
             ValidarPosicaoItem(posicao);
 
             if (_items[posicao] != null && _items[posicao].ID == null)
             {
-                Console.WriteLine($"Posição {posicao} já está vazia");
-                return;
+                return $"Posição {posicao} já está vazia";
             }
             _items[posicao] = new Item();
+
+            return "Item removido com sucesso!";
         }
 
         public bool EstaCheio()
@@ -81,15 +82,12 @@
             return true;
         }
 
-        public void LimparContainer()=>ResetarItens(itemsLength);
+        public void LimparContainer() => ResetarItens(itemsLength);
 
-        public void AdicionarItens(List<Item> itens)
+        public string AdicionarItens(List<Item> itens)
         {
             if (itens.Count > _items.Count)
-            {
-                Console.WriteLine("Quantidade de itens ultrapassa o limite permitido!");
-                return;
-            }
+                return "Quantidade de itens ultrapassa o limite permitido!";
 
             int posicao = 0;
             foreach (var item in itens)
@@ -101,22 +99,22 @@
                     _items[posicao] = item;
 
                 else
-                {
-                    Console.WriteLine("Container está cheio! Não é permitido incluir itens no momento!");
-                    break;
-                }
+                    return "Container está cheio! Não é permitido incluir itens no momento!";
             }
+
+            return "Itens adicionados com sucesso!";
         }
 
-        public void ImprimirItens()
+        public string ImprimirItens()
         {
-            Console.WriteLine($"  Container {NumeroContainer}:");
+            string retorno = $"  Container {NumeroContainer}:";
             for (int posicao = 0; posicao < _items.Count; posicao++)
             {
                 var item = _items[posicao];
                 if (item != null && item.ID != null)
-                    Console.WriteLine($"    Posição {posicao}: {item.Descricao}");
+                    retorno += $"    Posição {posicao}: {item.Descricao}";
             }
+            return retorno;
         }
     }
 }
