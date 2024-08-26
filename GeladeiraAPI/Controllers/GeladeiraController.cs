@@ -34,7 +34,15 @@ namespace GeladeiraAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Item> Get() => Itens;
+        public ActionResult<IEnumerable<Item>> Get()
+        {
+            var mensagemGeladeiraVazia = "A geladeira está vazia!";
+
+            if (Itens?.Count <= 0 )
+                return NotFound(mensagemGeladeiraVazia);
+
+            return Ok(Itens);
+        }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -42,8 +50,7 @@ namespace GeladeiraAPI.Controllers
             var retorno = Itens.Where(p => p.ID == id).FirstOrDefault() ?? new Item();
 
             if (retorno is null)
-                return NotFound();
-
+                return NotFound("A geladeira está vazia!");
 
             return Ok(retorno);
         }
@@ -61,7 +68,6 @@ namespace GeladeiraAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
 
         [HttpPost("AddItensAoContainer")]
