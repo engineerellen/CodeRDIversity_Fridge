@@ -1,10 +1,14 @@
-﻿namespace Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain
 {
     internal class Andar
     {
         private readonly List<Container> _containers;
 
         public int NumeroAndar { get; private set; }
+
+        [StringLength(50)]
         public string Descricao { get; set; }
 
         private const int numContainers = 2;

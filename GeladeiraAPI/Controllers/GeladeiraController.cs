@@ -1,6 +1,8 @@
 ﻿using Domain;
 using GeladeiraAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Repository.Models;
+using Services;
 
 namespace GeladeiraAPI.Controllers
 {
@@ -8,46 +10,45 @@ namespace GeladeiraAPI.Controllers
     [ApiController]
     public class GeladeiraController : ControllerBase
     {
-        private List<Item> Itens;
-        private Geladeira objGeladeira;
+        private List<Domain.Item> Itens;
+        private Domain.Geladeira objGeladeira;
+        GeladeiraService _service;
 
-
-        public GeladeiraController()
+        private readonly GeladeiraContext _context;
+        public GeladeiraController(GeladeiraContext context)
         {
-            //Conceito de pilha- Stack
+            _context = context;
 
-            objGeladeira = new Geladeira();
+            _service = new GeladeiraService(_context);
+            //Conceito de pilha - Stack
 
-            var objItemMaca = new Item() { Descricao = "Maçã", Quantidade = 1, UnidadeQtd = "Unidade", Classificacao = "Fruta", ID = 1 };
-            var objItemBanana = new Item() { Descricao = "Banana", Quantidade = 1, UnidadeQtd = "Cacho", Classificacao = "Fruta", ID = 2 };
-            var objItemLaranja = new Item() { Descricao = "Laranja", Quantidade = 1, UnidadeQtd = "Duzia", Classificacao = "Fruta", ID = 3 };
+            objGeladeira = new Domain.Geladeira();
 
-            var objItemLeite = new Item() { Descricao = "Leite", Quantidade = 1, UnidadeQtd = "Litro", Classificacao = "Laticínio", ID = 4 };
-            var objItemQueijo = new Item() { Descricao = "Queijo", Quantidade = 1, UnidadeQtd = "Unidade", Classificacao = "Laticínio", ID = 5 };
-            var objItemMilho = new Item() { Descricao = "Milho Enlatado", Quantidade = 1, UnidadeQtd = "Lata", Classificacao = "Enlatado", ID = 6 };
+            var objItemMaca = new Domain.Item() { Descricao = "Maçã", Quantidade = 1, UnidadeQtd = "Unidade", Classificacao = "Fruta", ID = 1 };
+            var objItemBanana = new Domain.Item() { Descricao = "Banana", Quantidade = 1, UnidadeQtd = "Cacho", Classificacao = "Fruta", ID = 2 };
+            var objItemLaranja = new Domain.Item() { Descricao = "Laranja", Quantidade = 1, UnidadeQtd = "Duzia", Classificacao = "Fruta", ID = 3 };
 
-            var objItemPresunto = new Item() { Descricao = "Presunto", Quantidade = 100, UnidadeQtd = "Gramas", Classificacao = "Charcutaria", ID = 7 };
-            var objItemOvos = new Item() { Descricao = "Ovos", Quantidade = 1, UnidadeQtd = "Duzia", Classificacao = "Ovo", ID = 8 };
-            var objItemCarne = new Item() { Descricao = "Carne", Quantidade = 1, UnidadeQtd = "Kilo", Classificacao = "Carne", ID = 9 };
+            var objItemLeite = new Domain.Item() { Descricao = "Leite", Quantidade = 1, UnidadeQtd = "Litro", Classificacao = "Laticínio", ID = 4 };
+            var objItemQueijo = new Domain.Item() { Descricao = "Queijo", Quantidade = 1, UnidadeQtd = "Unidade", Classificacao = "Laticínio", ID = 5 };
+            var objItemMilho = new Domain.Item() { Descricao = "Milho Enlatado", Quantidade = 1, UnidadeQtd = "Lata", Classificacao = "Enlatado", ID = 6 };
+
+            var objItemPresunto = new Domain.Item() { Descricao = "Presunto", Quantidade = 100, UnidadeQtd = "Gramas", Classificacao = "Charcutaria", ID = 7 };
+            var objItemOvos = new Domain.Item() { Descricao = "Ovos", Quantidade = 1, UnidadeQtd = "Duzia", Classificacao = "Ovo", ID = 8 };
+            var objItemCarne = new Domain.Item() { Descricao = "Carne", Quantidade = 1, UnidadeQtd = "Kilo", Classificacao = "Carne", ID = 9 };
 
             Itens = new() { objItemMaca, objItemBanana, objItemLaranja, objItemLeite, objItemQueijo, objItemMilho, objItemPresunto, objItemOvos, objItemCarne };
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> Get()
-        {
-            var mensagemGeladeiraVazia = "A geladeira está vazia!";
+        public ActionResult<IEnumerable<Repository.Models.Item>> Get()=>
+             _service.GetAllItems();
 
-            if (Itens?.Count <= 0 )
-                return NotFound(mensagemGeladeiraVazia);
 
-            return Ok(Itens);
-        }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var retorno = Itens.Where(p => p.ID == id).FirstOrDefault() ?? new Item();
+            var retorno = Itens.Where(p => p.ID == id).FirstOrDefault() ?? new Domain.Item();
 
             if (retorno is null)
                 return NotFound("A geladeira está vazia!");
