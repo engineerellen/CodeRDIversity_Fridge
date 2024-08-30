@@ -5,10 +5,18 @@ namespace Domain
 {
     public class Item
     {
-        
-        public int? ID { get; set; }
+        [Required]
+        public int IdItem { get; set; }
+
+        [Required]
+        public int NumeroAndar { get; set; }
+        [Required]
+        public int NumeroContainer { get; set; }
+        [Required]
+        public int PosicaoDentroContainer { get; set; }
 
         [StringLength(100)]
+        [Required]
         public string Descricao { get; set; } = string.Empty;
 
         public int Quantidade { get; set; }

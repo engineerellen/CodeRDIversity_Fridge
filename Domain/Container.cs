@@ -18,7 +18,7 @@
         private void ResetarItens(int qtdePosicoes)
         {
             for (int i = 0; i < qtdePosicoes; i++)
-                _items.Add(new Item());
+                _items?.Add(new Item());
         }
 
         private static void ValidarPosicaoItem(int posicao)
@@ -31,7 +31,7 @@
         {
             ValidarPosicaoItem(posicao);
 
-            if (_items[posicao] != null && _items[posicao].ID != null)
+            if (_items[posicao] != null && _items[posicao]?.IdItem != null)
                 throw new Exception($"Posicao {posicao} já esta preenchida!");
 
             _items[posicao] = item;
@@ -49,7 +49,7 @@
         {
             ValidarPosicaoItem(posicao);
 
-            if (_items[posicao] != null && _items[posicao].ID == null)
+            if (_items[posicao] != null && _items[posicao]?.IdItem == null)
                 throw new Exception($"Posição {posicao} já está vazia");
            
             _items[posicao] = new Item();
@@ -69,7 +69,7 @@
         {
             foreach (var item in _items)
             {
-                if (item != null && item.ID != null)
+                if (item != null && item?.IdItem != null)
                     return false;
             }
 
@@ -86,7 +86,7 @@
             int posicao = 0;
             foreach (var item in itens)
             {
-                while (posicao < _items.Count && _items[posicao].ID != null)
+                while (posicao < _items.Count && _items[posicao]?.IdItem != null)
                     posicao++;
 
                 if (posicao < _items.Count)
@@ -103,7 +103,7 @@
             for (int posicao = 0; posicao < _items.Count; posicao++)
             {
                 var item = _items[posicao];
-                if (item != null && item.ID != null)
+                if (item != null && item?.IdItem != null)
                     retorno += $"    Posição {posicao}: {item.Descricao}";
             }
             return retorno;

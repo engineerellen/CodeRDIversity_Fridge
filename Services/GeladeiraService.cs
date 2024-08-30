@@ -1,5 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using Repository.Models;
+﻿using Domain;
+using Microsoft.Data.SqlClient;
+using Repository;
 
 namespace Services
 {
@@ -73,9 +74,9 @@ namespace Services
             }
         }
 
-        public Item GetItemById(int idItem)
+        public Item? GetItemById(int idItem)
         {
-            Item item = new Item();
+            Item? item = new Item();
 
             try
             {
@@ -84,8 +85,8 @@ namespace Services
                     return null;
                 }
 
-                var cli = _contexto.Items.Where(x => x.IdItem == idItem).ToList();
-                item = cli.FirstOrDefault();
+                var lstItems = _contexto.Items.Where(x => x.IdItem == idItem).ToList();
+                item = lstItems!= null ? lstItems.FirstOrDefault(): null;
 
                 if (item != null)
                 {
@@ -102,7 +103,7 @@ namespace Services
             }
         }
 
-        public List<Item> GetAllItems()
+        public List<Item>? GetAllItems()
         {
             List<Item> listOfItems = new List<Item>();
             try
@@ -119,7 +120,7 @@ namespace Services
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return null;
             }
