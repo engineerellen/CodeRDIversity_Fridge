@@ -30,7 +30,7 @@ namespace Domain
                 throw new Exception("Numero do andar inválido!");
         }
 
-        private static Container? RetornarContainer(int numAndar, int numContainer, List<Andar> lstAndares)
+        private Container? RetornarContainer(int numAndar, int numContainer, List<Andar> lstAndares)
         {
             Validarandares(numAndar, lstAndares);
 

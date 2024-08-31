@@ -1,5 +1,4 @@
 ﻿using Domain;
-using GeladeiraAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repository;
@@ -17,37 +16,51 @@ namespace GeladeiraAPI.Controllers
         public GeladeiraController(GeladeiraContext context)
         {
             _context = context;
-
             _service = new GeladeiraService(_context);
-
-         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllItems()
-        {
-            var contents = await _context.Items.ToListAsync();
-            return Ok(contents);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetItemById(int id)
-        {
-            var item = await _context.Items.FindAsync(id);
-
-            if (item == null)
-                return NotFound();
-
-            return Ok(item);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddItem([FromBody] Item newItem)
+        [HttpGet("RetornarItens")]
+        public ActionResult<List<Item>> RetornarItens()
         {
             try
             {
-                _context.Items.Add(newItem);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetItemById), new { id = newItem.IdItem }, newItem);
+                return Ok(_service.RetornarItens());
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet("{ItemID}")]
+        public IActionResult GetItemById(int ItemID)
+        {
+            try
+            {
+                var item = _service.GetItemById(ItemID);
+
+                if (item == null)
+                    return NotFound();
+
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPost("InserirItem")]
+        public IActionResult InserirItem([FromBody] Item novoITem)
+        {
+            try
+            {
+                _service.InserirItem(novoITem);
+                return Created();
             }
             catch (Exception ex)
             {
@@ -55,21 +68,17 @@ namespace GeladeiraAPI.Controllers
             }
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateItem(int id, [FromBody] Item updatedItem)
+
+        [HttpPatch("AtualizarItem")]
+        public IActionResult AtualizarItem( [FromBody] Item item)
         {
-            if (id != updatedItem.IdItem)
-                return BadRequest();
-
-            _context.Entry(updatedItem).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                _service.AtualizarItem(item);
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!_context.Items.Any(e => e.IdItem == id))
+                if (!_context.Items.Any(e => e.IdItem == item.IdItem))
                     return NotFound();
                 else
                     return BadRequest(ex.Message);
@@ -78,19 +87,68 @@ namespace GeladeiraAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteItem(int id)
+        [HttpDelete("{idItem}")]
+        public IActionResult DeleteItem(int idItem)
         {
-            var item = await _context.Items.FindAsync(id);
+            try
+            {
+                var item = _service.GetItemById(idItem);
 
-            if (item == null)
-                return NotFound();
+                if (item == null)
+                    return NotFound();
 
-            _context.Items.Remove(item);
+                _service.RetirarItemPorID(idItem);
 
-            await _context.SaveChangesAsync();
+                return Ok("Item retirado com sucesso!");
+            }
+            catch (Exception ex)
+            {
 
-            return NoContent();
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
+        [HttpPost("AdicionarItens")]
+        public IActionResult AdicionarItens([FromBody] List<Item> items)
+        {
+            try
+            {
+                return Ok(_service.AdicionarItensNaGeladeira(items));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("EsvaziarContainer")]
+        public IActionResult EsvaziarContainer(int numAndar, int numContainer)
+        {
+            try
+            {
+                return Ok(_service.EsvaziarContainer(numAndar, numContainer));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpHead]
+        public IActionResult CheckStatusGeladeira()
+        {
+            var count = _context.Items.Count();
+            Response.Headers.Append("X-Total-Count", count.ToString());
+            return Ok();
+        }
+
+        [HttpOptions]
+        public IActionResult GetOptions()
+        {
+            Response.Headers.Append("Allow", "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS");
+            return Ok();
         }
     }
 }

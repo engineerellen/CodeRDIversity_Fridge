@@ -1,12 +1,15 @@
 ﻿using Domain;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Repository;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Services
 {
     public class GeladeiraService
     {
         private GeladeiraContext _contexto;
+        private Geladeira objGeladeira = new();
 
         public GeladeiraService(GeladeiraContext contexto)
         {
@@ -19,6 +22,9 @@ namespace Services
             {
                 if (item != null)
                 {
+                    if (PosicaoPreenchida(item))
+                        throw new Exception("Posição já preenchida!");
+
                     var itemExistente = GetItemById(item.IdItem);
 
                     if (itemExistente == null)
@@ -30,7 +36,7 @@ namespace Services
                     }
                     else
                     {
-                        return "Item já existente na geladeira.";
+                        throw new Exception("Item já existente na geladeira.");
                     }
                 }
                 else
@@ -52,6 +58,8 @@ namespace Services
         {
             try
             {
+                _contexto.Entry(item).State = EntityState.Modified;
+
                 if (item != null)
                 {
                     _contexto.Update(item);
@@ -86,7 +94,7 @@ namespace Services
                 }
 
                 var lstItems = _contexto.Items.Where(x => x.IdItem == idItem).ToList();
-                item = lstItems!= null ? lstItems.FirstOrDefault(): null;
+                item = lstItems != null ? lstItems.FirstOrDefault() : null;
 
                 if (item != null)
                 {
@@ -103,7 +111,17 @@ namespace Services
             }
         }
 
-        public List<Item>? GetAllItems()
+        private bool PosicaoPreenchida(Item item)
+        {
+            var lstItems = _contexto.Items.Where(i => i.NumeroAndar == item.NumeroAndar
+                                                            && i.NumeroContainer == item.NumeroContainer
+                                                            && i.PosicaoDentroContainer == item.PosicaoDentroContainer).ToList();
+            var itemRetornado = lstItems.FirstOrDefault();
+
+            return itemRetornado != null;
+        }
+
+        public List<Item>? RetornarItens()
         {
             List<Item> listOfItems = new List<Item>();
             try
@@ -120,13 +138,13 @@ namespace Services
                     return null;
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return null;
             }
         }
 
-        public string RemoveItemById(int idItem)
+        public string RetirarItemPorID(int idItem)
         {
             try
             {
@@ -161,6 +179,36 @@ namespace Services
             }
         }
 
+        public string EsvaziarContainer(int numAndar, int numContainer)
+        {
+            var itensContainer = _contexto.Items.Where(c => c.NumeroAndar == numAndar && c.NumeroContainer == numContainer).ToList();
+
+            if (itensContainer is not null)
+            {
+                foreach (var item in itensContainer)
+                    RetirarItemPorID(item.IdItem);
+            }
+
+            else
+                throw new Exception("Container está vazio!");
+
+            return "Container esvaziado com sucesso!";
+        }
+
+        public string AdicionarItensNaGeladeira(List<Item> itens)
+        {
+            foreach (Item item in itens)
+            {
+                var itensContainer = _contexto.Items.Where(c => c.NumeroAndar == item.NumeroAndar && c.NumeroContainer == item.NumeroContainer).ToList();
+
+                if (itensContainer is not null)
+                    InserirItem(item);
+
+                else
+                    throw new Exception("Container já está cheio!");
+            }
+
+            return "Itens adicionados com sucesso!";
+        }
     }
 }
-
