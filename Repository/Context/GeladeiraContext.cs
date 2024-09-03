@@ -1,7 +1,7 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Repository;
+namespace Repository.Context;
 public class GeladeiraContext : DbContext
 {
     public DbSet<Item> Items { get; set; }

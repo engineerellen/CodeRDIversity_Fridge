@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Repository.Context;
+using Repository.Interface;
+using Services.Interfaces;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,9 @@ builder.Services.AddDbContext<GeladeiraContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 

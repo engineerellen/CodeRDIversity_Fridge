@@ -1,35 +1,32 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Repository;
-using Services;
+using Services.Interfaces;
 
 namespace GeladeiraAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GeladeiraController : ControllerBase
+    public class ItemsController : ControllerBase
     {
-        GeladeiraService _service;
 
-        private readonly GeladeiraContext _context;
-        public GeladeiraController(GeladeiraContext context)
+        private readonly IItemService _service;
+        public ItemsController(IItemService service)
         {
-            _context = context;
-            _service = new GeladeiraService(_context);
+            _service = service;
         }
 
         [HttpGet("RetornarItens")]
-        public ActionResult<List<Item>> RetornarItens()
+        public async Task<ActionResult<List<Item>>> RetornarItens()
         {
             try
             {
-                return Ok(_service.RetornarItens());
+                return Ok(await _service.RetornarItensAsync());
             }
             catch (Exception ex)
             {
 
-                return BadRequest(ex.Message);
+                return  BadRequest(ex.Message);
             }
 
         }
@@ -39,7 +36,7 @@ namespace GeladeiraAPI.Controllers
         {
             try
             {
-                var item = _service.GetItemById(ItemID);
+                var item = _service.ObterItemPorID(ItemID);
 
                 if (item == null)
                     return NotFound();
@@ -55,11 +52,11 @@ namespace GeladeiraAPI.Controllers
         }
 
         [HttpPost("InserirItem")]
-        public IActionResult InserirItem([FromBody] Item novoITem)
+        public async Task<IActionResult> InserirItem([FromBody] Item novoITem)
         {
             try
             {
-                _service.InserirItem(novoITem);
+                await _service.InserirItemAsync(novoITem);
                 return Created();
             }
             catch (Exception ex)
@@ -70,15 +67,15 @@ namespace GeladeiraAPI.Controllers
 
 
         [HttpPatch("AtualizarItem")]
-        public IActionResult AtualizarItem( [FromBody] Item item)
+        public async Task<IActionResult> AtualizarItem([FromBody] Item item)
         {
             try
             {
-                _service.AtualizarItem(item);
+               await _service.AtualizarItemAsync(item);
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!_context.Items.Any(e => e.IdItem == item.IdItem))
+                if (!_service.ItemExistente(item.IdItem))
                     return NotFound();
                 else
                     return BadRequest(ex.Message);
@@ -88,22 +85,21 @@ namespace GeladeiraAPI.Controllers
         }
 
         [HttpDelete("{idItem}")]
-        public IActionResult DeleteItem(int idItem)
+        public async Task<IActionResult> DeleteItem(int idItem)
         {
             try
             {
-                var item = _service.GetItemById(idItem);
+                var item = _service.ObterItemPorID(idItem);
 
                 if (item == null)
                     return NotFound();
 
-                _service.RetirarItemPorID(idItem);
+                await _service.RetirarItemPorIDAsync(idItem);
 
                 return Ok("Item retirado com sucesso!");
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
 
@@ -111,11 +107,11 @@ namespace GeladeiraAPI.Controllers
 
 
         [HttpPost("AdicionarItens")]
-        public IActionResult AdicionarItens([FromBody] List<Item> items)
+        public async Task<IActionResult> AdicionarItens([FromBody] List<Item> items)
         {
             try
             {
-                return Ok(_service.AdicionarItensNaGeladeira(items));
+                return Ok(await _service.AdicionarItensNaGeladeiraAsync(items));
             }
             catch (Exception ex)
             {
@@ -124,11 +120,11 @@ namespace GeladeiraAPI.Controllers
         }
 
         [HttpDelete("EsvaziarContainer")]
-        public IActionResult EsvaziarContainer(int numAndar, int numContainer)
+        public async Task<IActionResult> EsvaziarContainer(int numAndar, int numContainer)
         {
             try
             {
-                return Ok(_service.EsvaziarContainer(numAndar, numContainer));
+                return Ok(await _service.EsvaziarContainerAsync(numAndar, numContainer));
             }
             catch (Exception ex)
             {
@@ -137,10 +133,11 @@ namespace GeladeiraAPI.Controllers
         }
 
         [HttpHead]
-        public IActionResult CheckStatusGeladeira()
+        public async Task<IActionResult> CheckStatusGeladeiraAsync()
         {
-            var count = _context.Items.Count();
-            Response.Headers.Append("X-Total-Count", count.ToString());
+            List<Item> Items = await _service.RetornarItensAsync();
+
+            Response.Headers.Append("X-Total-Count", Items.Count.ToString());
             return Ok();
         }
 
