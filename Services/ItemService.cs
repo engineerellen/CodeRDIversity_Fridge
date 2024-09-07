@@ -91,7 +91,8 @@ namespace Services
             }
         }
 
-        public bool ItemExistente(int idItem) => _itemRepository.ItemExistente(idItem);
+        public bool ItemExistente(int idItem) =>
+            _itemRepository.ItemExistente(idItem);
 
         private async Task<bool> PosicaoPreenchida(Item item)
         {
@@ -104,7 +105,8 @@ namespace Services
             return itemRetornado != null;
         }
 
-        public async Task<List<Item>> RetornarItensAsync()=> await _itemRepository.RetornarItensAsync();
+        public async Task<List<Item>> RetornarItensAsync()=>
+            await _itemRepository.RetornarItensAsync();
 
         public async Task<string> RetirarItemPorIDAsync(int idItem)
         {

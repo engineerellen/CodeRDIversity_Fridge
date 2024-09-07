@@ -1,9 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Repository;
-using Repository.Context;
-using Repository.Interface;
-using Services.Interfaces;
-using Services;
+using Services.DIP;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,12 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<GeladeiraContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+//injeção de dependência
+Init.Configure(builder.Services, builder.Configuration);
 
-builder.Services.AddScoped<IItemRepository, ItemRepository>();
-builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

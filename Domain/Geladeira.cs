@@ -10,10 +10,14 @@ namespace Domain
         {
             _Andares = new Stack<Andar>();
 
-            _Andares.Push(new Andar(0, "Charcutaria, Carnes e Ovos"));
+            _Andares.Push(new Andar(0, "Carnes, Ovos e Charcutaria"));
             _Andares.Push(new Andar(1, "Laticínios e Enlatados"));
             _Andares.Push(new Andar(2, "Frutas e Verduras"));
         }
+
+        internal List<Andar> RetornarAndares()=>
+            _Andares.ToList();
+
 
         private List<Andar> RetornarAndares(int numAndar)
         {
@@ -24,7 +28,7 @@ namespace Domain
             return lstAndares;
         }
 
-        private static void Validarandares(int numAndar, List<Andar> lstAndares)
+        internal static void Validarandares(int numAndar, List<Andar> lstAndares)
         {
             if (numAndar < 0 || numAndar >= lstAndares.Count)
                 throw new Exception("Numero do andar inválido!");
