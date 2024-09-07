@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Models;
 
 Geladeira objGeladeira = new();
 

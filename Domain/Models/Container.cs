@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using Domain.Interfaces;
+
+namespace Domain.Models
 {
     public class Container : IContainer
     {
@@ -51,7 +53,7 @@
 
             if (_items[posicao] != null && _items[posicao]?.IdItem == null)
                 throw new Exception($"Posição {posicao} já está vazia");
-           
+
             _items[posicao] = new Item();
         }
 

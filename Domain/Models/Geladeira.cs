@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Domain
+namespace Domain.Models
 {
     public sealed class Geladeira
     {
@@ -15,7 +15,7 @@ namespace Domain
             _Andares.Push(new Andar(2, "Frutas e Verduras"));
         }
 
-        internal List<Andar> RetornarAndares()=>
+        internal List<Andar> RetornarAndares() =>
             _Andares.ToList();
 
 

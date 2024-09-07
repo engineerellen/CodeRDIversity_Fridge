@@ -1,8 +1,7 @@
-﻿
-using Domain.Validators;
+﻿using Domain.Validators;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain
+namespace Domain.Models
 {
     public class Item
     {

@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Models;
 using Microsoft.Data.SqlClient;
 using Repository.Interface;
 using Services.Interfaces;

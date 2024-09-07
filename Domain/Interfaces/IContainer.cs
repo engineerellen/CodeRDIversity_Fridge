@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using Domain.Models;
+
+namespace Domain.Interfaces
 {
     internal interface IContainer
     {

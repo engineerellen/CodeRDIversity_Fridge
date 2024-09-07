@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain
+namespace Domain.Models
 {
     internal class Andar
     {
@@ -31,7 +31,7 @@ namespace Domain
             string retorno = $"Andar {NumeroAndar}:";
 
             foreach (var container in _containers)
-               retorno += container.ImprimirItens();
+                retorno += container.ImprimirItens();
 
             return retorno;
         }

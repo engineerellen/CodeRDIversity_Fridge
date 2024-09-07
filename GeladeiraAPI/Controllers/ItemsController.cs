@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
@@ -26,7 +26,7 @@ namespace GeladeiraAPI.Controllers
             catch (Exception ex)
             {
 
-                return  BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
 
         }
@@ -71,7 +71,7 @@ namespace GeladeiraAPI.Controllers
         {
             try
             {
-               await _service.AtualizarItemAsync(item);
+                await _service.AtualizarItemAsync(item);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -133,7 +133,7 @@ namespace GeladeiraAPI.Controllers
         }
 
         [HttpHead]
-        public async Task<IActionResult> CheckStatusGeladeiraAsync()
+        public async Task<IActionResult> CheckarStatusGeladeiraAsync()
         {
             List<Item> Items = await _service.RetornarItensAsync();
 
@@ -142,7 +142,7 @@ namespace GeladeiraAPI.Controllers
         }
 
         [HttpOptions]
-        public IActionResult GetOptions()
+        public IActionResult ObterOptions()
         {
             Response.Headers.Append("Allow", "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS");
             return Ok();
