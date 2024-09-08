@@ -5,6 +5,7 @@ namespace Domain.Models
     internal class Andar
     {
         private readonly List<Container> _containers;
+        private  Stack<Andar> _Andares;
 
         public int NumeroAndar { get; private set; }
 
@@ -23,15 +24,46 @@ namespace Domain.Models
                 _containers.Add(new Container(i));
         }
 
+        public Andar()
+        { }
+
+        internal Stack<Andar> CriaAndar()
+        {
+            _Andares = new Stack<Andar>();
+
+            _Andares.Push(new Andar(0, "Carnes, Ovos e Charcutaria"));
+            _Andares.Push(new Andar(1, "Laticínios e Enlatados"));
+            _Andares.Push(new Andar(2, "Frutas e Verduras"));
+
+            return _Andares;
+        }
+
         public Container? RetornarContainer(int numContainer) =>
             _containers?.Find(container => container?.NumeroContainer == numContainer);
 
-        public string ImprimirItens()
+        internal List<Andar> RetornarAndares() =>
+    _Andares.ToList();
+        internal List<Andar> RetornarAndares(int numAndar)
+        {
+            var lstAndares = _Andares.ToList();
+
+            ValidarAndares(numAndar, lstAndares);
+
+            return lstAndares;
+        }
+
+        internal void ValidarAndares(int numAndar, List<Andar> lstAndares)
+        {
+            if (numAndar < 0 || numAndar >= lstAndares.Count)
+                throw new Exception("Numero do andar inválido!");
+        }
+
+        public string ImprimirAndar()
         {
             string retorno = $"Andar {NumeroAndar}:";
 
             foreach (var container in _containers)
-                retorno += container.ImprimirItens();
+                retorno += container.ImprimirContainer();
 
             return retorno;
         }

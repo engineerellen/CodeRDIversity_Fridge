@@ -6,6 +6,8 @@ namespace Domain.Models
     {
         private readonly List<Item> _items;
         private const int itemsLength = 4;
+        private Andar _andar;
+        private Item _item;
 
         public int NumeroContainer { get; private set; }
 
@@ -13,9 +15,13 @@ namespace Domain.Models
         {
             NumeroContainer = numContainer;
             _items = new List<Item>();
+            _andar = new Andar();
+            _item = new Item();
 
             ResetarItens(itemsLength);
         }
+
+        public Container() { }
 
         private void ResetarItens(int qtdePosicoes)
         {
@@ -23,7 +29,7 @@ namespace Domain.Models
                 _items?.Add(new Item());
         }
 
-        private static void ValidarPosicaoItem(int posicao)
+        private static void ValidarPosicao(int posicao)
         {
             if (posicao < 0 || posicao >= itemsLength)
                 throw new Exception("Posição inválida!");
@@ -31,7 +37,7 @@ namespace Domain.Models
 
         public void AdicionarItem(int posicao, Item item)
         {
-            ValidarPosicaoItem(posicao);
+            ValidarPosicao(posicao);
 
             if (_items[posicao] != null && _items[posicao]?.IdItem != null)
                 throw new Exception($"Posicao {posicao} já esta preenchida!");
@@ -41,15 +47,14 @@ namespace Domain.Models
 
         public Item? RetornarItem(int posicao)
         {
-            ValidarPosicaoItem(posicao);
+            ValidarPosicao(posicao);
 
             return _items[posicao];
         }
 
-
         public void RemoverItem(int posicao)
         {
-            ValidarPosicaoItem(posicao);
+            ValidarPosicao(posicao);
 
             if (_items[posicao] != null && _items[posicao]?.IdItem == null)
                 throw new Exception($"Posição {posicao} já está vazia");
@@ -80,26 +85,27 @@ namespace Domain.Models
 
         public void LimparContainer() => ResetarItens(itemsLength);
 
-        public void AdicionarItens(List<Item> itens)
+        public void LimparContainer(int numAndar, int numContainer)
         {
-            if (itens.Count > _items.Count)
-                throw new Exception("Quantidade de itens ultrapassa o limite permitido!");
+            var arrAndares = _andar.RetornarAndares(numAndar);
 
-            int posicao = 0;
-            foreach (var item in itens)
-            {
-                while (posicao < _items.Count && _items[posicao]?.IdItem != null)
-                    posicao++;
+            Container? container = RetornarContainer(numAndar, numContainer, arrAndares);
 
-                if (posicao < _items.Count)
-                    _items[posicao] = item;
-
-                else
-                    throw new Exception("Container está cheio! Não é permitido incluir itens no momento!");
-            }
+            if (!Convert.ToBoolean(container?.EstaVazio()))
+                container?.LimparContainer();
+            else
+                throw new Exception("Container está vazio!");
         }
 
-        public string ImprimirItens()
+        internal Container? RetornarContainer(int numAndar, int numContainer, List<Andar> lstAndares)
+        {
+            _andar.ValidarAndares(numAndar, lstAndares);
+
+            var container = lstAndares[numAndar].RetornarContainer(numContainer);
+            return container;
+        }
+
+        public string ImprimirContainer()
         {
             string retorno = $"  Container {NumeroContainer}:";
             for (int posicao = 0; posicao < _items.Count; posicao++)

@@ -5,6 +5,12 @@ namespace Domain.Models
 {
     public class Item
     {
+        private readonly List<Item> _items;
+
+        public Item()
+        {
+        }
+
         [Required(ErrorMessage = "O campo Id do Item é obrigatório!")]
         [RegularExpression("([0-9]+)", ErrorMessage = "O ID deverá ser numérico!")]
         public int IdItem { get; set; }
@@ -42,5 +48,59 @@ namespace Domain.Models
         [StringLength(200, ErrorMessage = "O campo classificação deverá ter até 200 caracteres!")]
         [ClassificacaoValidator]
         public string Classificacao { get; set; } = string.Empty;
+
+
+        public void AdicionarItens(List<Item> itens)
+        {
+            if (itens.Count > _items.Count)
+                throw new Exception("Quantidade de itens ultrapassa o limite permitido!");
+
+            int posicao = 0;
+            foreach (var item in itens)
+            {
+                while (posicao < _items.Count && _items[posicao]?.IdItem != null)
+                    posicao++;
+
+                if (posicao < _items.Count)
+                    _items[posicao] = item;
+
+                else
+                    throw new Exception("Container está cheio! Não é permitido incluir itens no momento!");
+            }
+        }
+
+        public void AdicionarItem(int numAndar, int numContainer, int posicao, Item item)
+        {
+            var arrAndares = new Andar().RetornarAndares(numAndar);
+
+            Container? container = new Container().RetornarContainer(numAndar, numContainer, arrAndares);
+
+            if (container == null)
+                throw new Exception("Numero do container inválido!");
+
+            container.AdicionarItem(posicao, item);
+        }
+
+        public void AddItens(int numAndar, int numContainer, List<Item> itens)
+        {
+            var arrAndares = new Andar().RetornarAndares(numAndar);
+
+            Container? container = new Container().RetornarContainer(numAndar, numContainer, arrAndares);
+
+            if (!Convert.ToBoolean(container?.EstaCheio()))
+                AdicionarItens(itens);
+            else
+                throw new Exception("Container já está cheio!");
+
+        }
+
+        public void RemoverItem(int numAndar, int numContainer, int posicao)
+        {
+            var arrAndares = new Andar().RetornarAndares(numAndar);
+
+            Container? container = new Container().RetornarContainer(numAndar, numContainer, arrAndares);
+
+            container?.RemoverItem(posicao);
+        }
     }
 }

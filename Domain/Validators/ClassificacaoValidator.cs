@@ -14,7 +14,7 @@ internal class ClassificacaoValidator : ValidationAttribute
 
         var strClassificacao = Convert.ToString(classificacao);
 
-        var listaAndares = new Geladeira().RetornarAndares().OrderBy(p => p.NumeroAndar).ToList();
+        var listaAndares = new Andar().RetornarAndares().OrderBy(p => p.NumeroAndar).ToList();
 
         var listaClassificacoes = listaAndares.Select(p => p.Descricao).ToList();
 
