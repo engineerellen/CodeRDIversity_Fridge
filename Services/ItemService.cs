@@ -78,7 +78,7 @@ namespace Services
                 if (idItem == 0)
                     return null;
 
-                _itemRepository.ObterItemPorID(idItem);
+                item = _itemRepository.ObterItemPorID(idItem);
 
                 if (item != null)
                     return item;
@@ -105,7 +105,7 @@ namespace Services
             return itemRetornado != null;
         }
 
-        public async Task<List<Item>> RetornarItensAsync()=>
+        public async Task<List<Item>> RetornarItensAsync() =>
             await _itemRepository.RetornarItensAsync();
 
         public async Task<string> RetirarItemPorIDAsync(int idItem)

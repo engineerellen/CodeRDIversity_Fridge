@@ -25,7 +25,6 @@ namespace GeladeiraAPI.Controllers
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
 
@@ -45,7 +44,6 @@ namespace GeladeiraAPI.Controllers
             }
             catch (Exception ex)
             {
-
                 return BadRequest(ex.Message);
             }
 
@@ -72,6 +70,7 @@ namespace GeladeiraAPI.Controllers
             try
             {
                 await _service.AtualizarItemAsync(item);
+                return Ok("Atualizado com sucesso!");
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -119,6 +118,7 @@ namespace GeladeiraAPI.Controllers
             }
         }
 
+
         [HttpDelete("EsvaziarContainer")]
         public async Task<IActionResult> EsvaziarContainer(int numAndar, int numContainer)
         {
@@ -132,6 +132,7 @@ namespace GeladeiraAPI.Controllers
             }
         }
 
+
         [HttpHead]
         public async Task<IActionResult> CheckarStatusGeladeiraAsync()
         {
@@ -140,6 +141,7 @@ namespace GeladeiraAPI.Controllers
             Response.Headers.Append("X-Total-Count", Items.Count.ToString());
             return Ok();
         }
+
 
         [HttpOptions]
         public IActionResult ObterOptions()

@@ -33,7 +33,7 @@ namespace Domain.Models
 
             _Andares.Push(new Andar(0, "Carnes, Ovos e Charcutaria"));
             _Andares.Push(new Andar(1, "Laticínios e Enlatados"));
-            _Andares.Push(new Andar(2, "Frutas e Verduras"));
+            _Andares.Push(new Andar(2, "Hortifruti, Frutas e Verduras"));
 
             return _Andares;
         }
@@ -42,7 +42,8 @@ namespace Domain.Models
             _containers?.Find(container => container?.NumeroContainer == numContainer);
 
         internal List<Andar> RetornarAndares() =>
-    _Andares.ToList();
+            CriaAndar().ToList();
+
         internal List<Andar> RetornarAndares(int numAndar)
         {
             var lstAndares = _Andares.ToList();

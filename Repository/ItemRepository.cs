@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Context;
 using Repository.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository
 {
@@ -14,10 +9,8 @@ namespace Repository
     {
         private readonly GeladeiraContext _contexto;
 
-        public ItemRepository(GeladeiraContext contexto)
-        {
+        public ItemRepository(GeladeiraContext contexto)=>
             _contexto = contexto;
-        }
 
         public async Task AtualizarItemAsync(Item item)
         {
