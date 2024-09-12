@@ -5,10 +5,11 @@ namespace Domain.Models
 {
     public class Item
     {
-        private readonly List<Item> _items;
+        public List<Item> Items;
 
         public Item()
         {
+
         }
 
         [Required(ErrorMessage = "O campo Id do Item é obrigatório!")]
@@ -52,17 +53,17 @@ namespace Domain.Models
 
         public void AdicionarItens(List<Item> itens)
         {
-            if (itens.Count > _items.Count)
+            if (itens.Count > Items.Count)
                 throw new Exception("Quantidade de itens ultrapassa o limite permitido!");
 
             int posicao = 0;
             foreach (var item in itens)
             {
-                while (posicao < _items.Count && _items[posicao]?.IdItem != null)
+                while (posicao < Items.Count && !string.IsNullOrEmpty(Items[posicao]?.Descricao))
                     posicao++;
 
-                if (posicao < _items.Count)
-                    _items[posicao] = item;
+                if (posicao < Items.Count)
+                    Items[posicao] = item;
 
                 else
                     throw new Exception("Container está cheio! Não é permitido incluir itens no momento!");
@@ -74,6 +75,10 @@ namespace Domain.Models
             var arrAndares = new Andar().RetornarAndares(numAndar);
 
             Container? container = new Container().RetornarContainer(numAndar, numContainer, arrAndares);
+
+            if (container is null)
+                container = arrAndares?.Find(a => a.NumeroAndar == numAndar)?
+                               .Containers.Find(c => c.NumeroContainer == numContainer);
 
             if (container == null)
                 throw new Exception("Numero do container inválido!");

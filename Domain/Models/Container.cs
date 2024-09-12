@@ -4,29 +4,37 @@ namespace Domain.Models
 {
     public class Container : IContainer
     {
-        private readonly List<Item> _items;
+        public readonly List<Item> Items;
         private const int itemsLength = 4;
-        private Andar _andar;
-        private Item _item;
+        public Andar _andar;
+        public Item _item;
+
 
         public int NumeroContainer { get; private set; }
 
         public Container(int numContainer)
         {
             NumeroContainer = numContainer;
-            _items = new List<Item>();
+            Items = new List<Item>();
             _andar = new Andar();
             _item = new Item();
 
             ResetarItens(itemsLength);
         }
 
-        public Container() { }
+        public Container()
+        {
+            if (_andar is null)
+            {
+                _andar = new Andar();
+                _andar.RetornarAndares();
+            }
+        }
 
         private void ResetarItens(int qtdePosicoes)
         {
             for (int i = 0; i < qtdePosicoes; i++)
-                _items?.Add(new Item());
+                Items?.Add(new Item());
         }
 
         private static void ValidarPosicao(int posicao)
@@ -35,36 +43,40 @@ namespace Domain.Models
                 throw new Exception("Posição inválida!");
         }
 
+
+        public Container? RetornarContainer(int numContainer) =>
+           _andar.Containers?.Find(container => container?.NumeroContainer == numContainer);
+
         public void AdicionarItem(int posicao, Item item)
         {
             ValidarPosicao(posicao);
 
-            if (_items[posicao] != null && _items[posicao]?.IdItem != null)
+            if (Items[posicao] != null && !string.IsNullOrEmpty(Items[posicao]?.Descricao))
                 throw new Exception($"Posicao {posicao} já esta preenchida!");
 
-            _items[posicao] = item;
+            Items[posicao] = item;
         }
 
         public Item? RetornarItem(int posicao)
         {
             ValidarPosicao(posicao);
 
-            return _items[posicao];
+            return Items[posicao];
         }
 
         public void RemoverItem(int posicao)
         {
             ValidarPosicao(posicao);
 
-            if (_items[posicao] != null && _items[posicao]?.IdItem == null)
+            if (Items[posicao] != null && Items[posicao]?.IdItem == null)
                 throw new Exception($"Posição {posicao} já está vazia");
 
-            _items[posicao] = new Item();
+            Items[posicao] = new Item();
         }
 
         public bool EstaCheio()
         {
-            foreach (var item in _items)
+            foreach (var item in Items)
             {
                 if (item == null)
                     return false;
@@ -74,7 +86,7 @@ namespace Domain.Models
 
         public bool EstaVazio()
         {
-            foreach (var item in _items)
+            foreach (var item in Items)
             {
                 if (item != null && item?.IdItem != null)
                     return false;
@@ -101,16 +113,16 @@ namespace Domain.Models
         {
             _andar.ValidarAndares(numAndar, lstAndares);
 
-            var container = lstAndares[numAndar].RetornarContainer(numContainer);
+            var container = RetornarContainer(numContainer);
             return container;
         }
 
         public string ImprimirContainer()
         {
             string retorno = $"  Container {NumeroContainer}:";
-            for (int posicao = 0; posicao < _items.Count; posicao++)
+            for (int posicao = 0; posicao < Items.Count; posicao++)
             {
-                var item = _items[posicao];
+                var item = Items[posicao];
                 if (item != null && item?.IdItem != null)
                     retorno += $"    Posição {posicao}: {item.Descricao}";
             }

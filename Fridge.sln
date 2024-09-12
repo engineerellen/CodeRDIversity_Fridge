@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeladeiraAPI", "GeladeiraAP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{D341D28B-2C51-471A-BC82-9B8B6C3C2F2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{5CA40961-1015-4505-AFAB-135AB0DEA292}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{5CA40961-1015-4505-AFAB-135AB0DEA292}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeladeiraTeste", "GeladeiraTeste\GeladeiraTeste.csproj", "{BC48BDC9-F1E3-4066-8DA2-CC747D4F6792}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5CA40961-1015-4505-AFAB-135AB0DEA292}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CA40961-1015-4505-AFAB-135AB0DEA292}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CA40961-1015-4505-AFAB-135AB0DEA292}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC48BDC9-F1E3-4066-8DA2-CC747D4F6792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC48BDC9-F1E3-4066-8DA2-CC747D4F6792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC48BDC9-F1E3-4066-8DA2-CC747D4F6792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC48BDC9-F1E3-4066-8DA2-CC747D4F6792}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

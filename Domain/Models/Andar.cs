@@ -2,10 +2,10 @@
 
 namespace Domain.Models
 {
-    internal class Andar
+    public class Andar
     {
-        private readonly List<Container> _containers;
-        private  Stack<Andar> _Andares;
+        public readonly List<Container> Containers;
+        public Stack<Andar> _Andares;
 
         public int NumeroAndar { get; private set; }
 
@@ -17,17 +17,20 @@ namespace Domain.Models
         public Andar(int numAndar, string descricao)
         {
             NumeroAndar = numAndar;
-            _containers = new List<Container>();
+            Containers = new List<Container>();
             Descricao = descricao;
 
+
             for (int i = 0; i < numContainers; i++)
-                _containers.Add(new Container(i));
+                Containers.Add(new Container(i));
+
         }
 
         public Andar()
-        { }
+        {
+        }
 
-        internal Stack<Andar> CriaAndar()
+        public Stack<Andar> CriaAndar()
         {
             _Andares = new Stack<Andar>();
 
@@ -38,22 +41,20 @@ namespace Domain.Models
             return _Andares;
         }
 
-        public Container? RetornarContainer(int numContainer) =>
-            _containers?.Find(container => container?.NumeroContainer == numContainer);
 
-        internal List<Andar> RetornarAndares() =>
+        public List<Andar> RetornarAndares() =>
             CriaAndar().ToList();
 
-        internal List<Andar> RetornarAndares(int numAndar)
+        public List<Andar> RetornarAndares(int numAndar)
         {
-            var lstAndares = _Andares.ToList();
+            var lstAndares = _Andares is null ? RetornarAndares() : _Andares.ToList();
 
             ValidarAndares(numAndar, lstAndares);
 
             return lstAndares;
         }
 
-        internal void ValidarAndares(int numAndar, List<Andar> lstAndares)
+        public void ValidarAndares(int numAndar, List<Andar> lstAndares)
         {
             if (numAndar < 0 || numAndar >= lstAndares.Count)
                 throw new Exception("Numero do andar inválido!");
@@ -63,7 +64,7 @@ namespace Domain.Models
         {
             string retorno = $"Andar {NumeroAndar}:";
 
-            foreach (var container in _containers)
+            foreach (var container in Containers)
                 retorno += container.ImprimirContainer();
 
             return retorno;

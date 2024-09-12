@@ -17,7 +17,6 @@ namespace Domain.Models
             _Andares = new Andar().CriaAndar();
         }
 
-
         public string ImprimeGeladeira()
         {
             StringBuilder sbRetorno = new StringBuilder();
