@@ -34,7 +34,13 @@ namespace Domain.Models
         private void ResetarItens(int qtdePosicoes)
         {
             for (int i = 0; i < qtdePosicoes; i++)
-                Items?.Add(new Item());
+            {
+                if (Items?.Count < qtdePosicoes)
+                    Items?.Add(new Item());
+                else
+                    Items[i] = new Item();
+            }
+
         }
 
         private static void ValidarPosicao(int posicao)
@@ -68,7 +74,7 @@ namespace Domain.Models
         {
             ValidarPosicao(posicao);
 
-            if (Items[posicao] != null && Items[posicao]?.IdItem == null)
+            if (Items[posicao] != null && string.IsNullOrEmpty(Items[posicao]?.Descricao))
                 throw new Exception($"Posição {posicao} já está vazia");
 
             Items[posicao] = new Item();
@@ -78,7 +84,7 @@ namespace Domain.Models
         {
             foreach (var item in Items)
             {
-                if (item == null)
+                if (string.IsNullOrEmpty(item.Descricao))
                     return false;
             }
             return true;
@@ -88,7 +94,7 @@ namespace Domain.Models
         {
             foreach (var item in Items)
             {
-                if (item != null && item?.IdItem != null)
+                if (item != null && !string.IsNullOrEmpty(item?.Descricao))
                     return false;
             }
 
@@ -123,7 +129,7 @@ namespace Domain.Models
             for (int posicao = 0; posicao < Items.Count; posicao++)
             {
                 var item = Items[posicao];
-                if (item != null && item?.IdItem != null)
+                if (item != null && !string.IsNullOrEmpty(item?.Descricao))
                     retorno += $"    Posição {posicao}: {item.Descricao}";
             }
             return retorno;

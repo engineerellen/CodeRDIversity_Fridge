@@ -7,6 +7,13 @@ namespace GeladeiraTeste.ModelsTest
     {
         private Item _item = new Item();
 
+        public ItemTest() {
+            _item.Items = new List<Item>();
+
+            for (int i = 0; i < 4; i++)
+                _item.Items.Add(new Item());
+        }
+
         [Fact]
         public void AdicionarItens_Test()
         {
@@ -92,7 +99,6 @@ namespace GeladeiraTeste.ModelsTest
             Item item3 = new Item() { Descricao = "doce de leite", IdItem = 4 };
 
             List<Item> novosItens = new List<Item>() { item, item1, item2, item3 };
-
 
             _item.AddItens(1, 0, novosItens);
 

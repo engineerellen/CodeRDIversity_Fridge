@@ -17,7 +17,7 @@ namespace Services.DIP;
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddSingleton<IItemRepository, ItemRepository>();
-            services.AddSingleton<IItemService, ItemService>();
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IItemService, ItemService>();
         }
     }

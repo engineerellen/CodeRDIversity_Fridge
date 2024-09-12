@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{5CA40961-1015-4505-AFAB-135AB0DEA292}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeladeiraTeste", "GeladeiraTeste\GeladeiraTeste.csproj", "{BC48BDC9-F1E3-4066-8DA2-CC747D4F6792}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeladeiraTeste", "GeladeiraTeste\GeladeiraTeste.csproj", "{BC48BDC9-F1E3-4066-8DA2-CC747D4F6792}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

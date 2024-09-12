@@ -35,13 +35,13 @@ namespace Services
                 else
                     return "Item inválido!";
             }
-            catch (SqlException)
+            catch (SqlException ex)
             {
-                return "Não foi possível se comunicar com a base de dados!";
+                throw ex;
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                throw ex;
             }
         }
 
@@ -137,7 +137,7 @@ namespace Services
 
             itensContainer = itensContainer?.Where(c => c.NumeroAndar == numAndar && c.NumeroContainer == numContainer).ToList();
 
-            if (itensContainer is not null)
+            if (itensContainer is not null && itensContainer.Count > 0)
             {
                 foreach (var item in itensContainer)
                     await _itemRepository.RetirarItemPorIDAsync(item.IdItem);
