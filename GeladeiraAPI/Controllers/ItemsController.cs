@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
@@ -16,6 +17,7 @@ namespace GeladeiraAPI.Controllers
             _service = service;
         }
 
+        [Authorize]
         [HttpGet("RetornarItens")]
         public async Task<ActionResult<List<Item>>> RetornarItens()
         {
