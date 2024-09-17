@@ -6,6 +6,7 @@ namespace GeladeiraTeste.ModelsTest
     {
         private Andar andar = new Andar();
 
+        [Theory]
         [InlineData(0, "Verduras")]
         [InlineData(1, "Laticínios")]
         [InlineData(2, "Carnes")]
