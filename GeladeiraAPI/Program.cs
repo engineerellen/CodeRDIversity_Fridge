@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 //injeção de dependência
 Init.Configure(builder.Services, builder.Configuration);
 
+//autorização token
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiagenda", Version = "v1" });
