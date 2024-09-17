@@ -58,6 +58,14 @@ public class ItemRepositoryTests
         // Arrange
         var context = GetInMemoryDbContext();
         var repository = new ItemRepository(context);
+
+
+        foreach (var itm in context.Items)
+        {
+            context.Items.Remove(itm);
+            await context.SaveChangesAsync();
+        }
+
         var item = new Item { IdItem = 1, Descricao = "Item1", Quantidade = 10 };
         await repository.InserirItemAsync(item);
 
@@ -92,10 +100,18 @@ public class ItemRepositoryTests
         // Arrange
         var context = GetInMemoryDbContext();
         var repository = new ItemRepository(context);
+
+        foreach (var item in context.Items)
+        {
+            context.Items.Remove(item);
+            await context.SaveChangesAsync();
+        }
+
+
         var items = new List<Item>
             {
-                new Item { IdItem = 1, Descricao = "Item1", Quantidade = 10 },
-                new Item { IdItem = 2, Descricao = "Item2", Quantidade = 20 }
+                new Item { IdItem = 100, Descricao = "Item1", Quantidade = 10 },
+                new Item { IdItem = 200, Descricao = "Item2", Quantidade = 20 }
             };
 
         context.Items.AddRange(items);

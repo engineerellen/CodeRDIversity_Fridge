@@ -40,7 +40,7 @@ namespace Repository
             if (item != null)
             {
                 _contexto.Items.Remove(item);
-                _contexto.SaveChangesAsync();
+               await _contexto.SaveChangesAsync();
             }
 
         }
