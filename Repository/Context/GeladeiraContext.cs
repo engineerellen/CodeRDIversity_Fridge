@@ -6,6 +6,8 @@ public class GeladeiraContext : DbContext
 {
     public DbSet<Item> Items { get; set; }
 
+    public DbSet<Usuario>? Usuarios { get; set; }
+
     public GeladeiraContext(DbContextOptions<GeladeiraContext> options)
         : base(options)
     {
