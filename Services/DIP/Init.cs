@@ -25,7 +25,7 @@ public class Init
 
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IItemService, ItemService>();
-        services.AddScoped<ILoginService,LoginServices>();
+        services.AddScoped<ITokenService,TokenServices>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IUsuarioService, UsuarioService>();
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-    public interface ILoginService
+    public interface ITokenService
     {
         string GenerateJwtToken(string username);
     }

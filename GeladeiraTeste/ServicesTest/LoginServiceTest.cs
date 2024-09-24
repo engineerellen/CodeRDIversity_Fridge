@@ -21,7 +21,7 @@ namespace GeladeiraTeste.ServicesTest
             var mockConfig = new Mock<IConfiguration>();
             mockConfig.Setup(x => x.GetSection("Key")).Returns(mockConfigSection.Object);
 
-            var loginService = new LoginServices(mockConfig.Object);
+            var loginService = new TokenServices(mockConfig.Object);
             var username = "testuser";
 
             // Act
@@ -47,7 +47,7 @@ namespace GeladeiraTeste.ServicesTest
             var mockConfig = new Mock<IConfiguration>();
             mockConfig.Setup(x => x.GetSection("Key")).Returns(mockConfigSection.Object);
 
-            var loginService = new LoginServices(mockConfig.Object);
+            var loginService = new TokenServices(mockConfig.Object);
             var username = "testuser";
 
             // Act

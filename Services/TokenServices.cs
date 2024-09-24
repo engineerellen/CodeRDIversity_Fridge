@@ -7,11 +7,11 @@ using System.Text;
 
 namespace Services
 {
-    public class LoginServices : ILoginService
+    public class TokenServices : ITokenService
     {
         private readonly string? _key;
 
-        public LoginServices(IConfiguration config)=>
+        public TokenServices(IConfiguration config)=>
             _key = config.GetValue<string>("Key");
 
         public string GenerateJwtToken(string username)

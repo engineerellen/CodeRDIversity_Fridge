@@ -43,12 +43,12 @@ namespace Services
             if (usuario == null)
                 throw new Exception("Nome e senha não conferem.");
 
-            var passwordHash = SenhaHash.ComputeHash(resource.Senha, usuario.SenhaSalt, _pepper, _iteration);
+            var passwordHash = SenhaHash.ComputeHash(resource.Senha, usuario?.SenhaSalt, _pepper, _iteration);
 
             if (usuario.SenhaHash != passwordHash)
                 throw new Exception("Nome e senha não conferem.");
 
-            return new UsuarioResource(usuario.Id, usuario.Nome, usuario.Email);
+            return new UsuarioResource(usuario.Id, usuario?.Nome, usuario?.Email);
         }
     }
 }
