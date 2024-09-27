@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace GeladeiraTeste.ServicesTest
 {
-    public class LoginServiceTest
+    public class TokenServiceTest
     {
         [Fact]
         public async Task GenerateJwtToken_Sucesso()

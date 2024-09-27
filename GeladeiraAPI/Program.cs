@@ -1,8 +1,5 @@
 using Microsoft.OpenApi.Models;
 using Services.DIP;
-using static System.Net.Mime.MediaTypeNames;
-using System.Diagnostics.Metrics;
-using System.Reflection.Metadata;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +9,7 @@ Init.Configure(builder.Services, builder.Configuration);
 //autorização token
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "apiagenda", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "apigeladeira", Version = "v1" });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {

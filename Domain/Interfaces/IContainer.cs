@@ -6,7 +6,7 @@ namespace Domain.Interfaces
     {
         void AdicionarItem(int posicao, Item item);
         Item? RetornarItem(int posicao);
-        void RemoverItem(int posicao);
+        void RemoverItemDoContainer(int posicao);
         bool EstaCheio();
         bool EstaVazio();
     }

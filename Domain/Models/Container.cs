@@ -19,7 +19,7 @@ namespace Domain.Models
             _andar = new Andar();
             _item = new Item();
 
-            ResetarItens(itemsLength);
+            ResetarContainer(itemsLength);
         }
 
         public Container()
@@ -31,7 +31,7 @@ namespace Domain.Models
             }
         }
 
-        private void ResetarItens(int qtdePosicoes)
+        private void ResetarContainer(int qtdePosicoes)
         {
             for (int i = 0; i < qtdePosicoes; i++)
             {
@@ -70,7 +70,7 @@ namespace Domain.Models
             return Items[posicao];
         }
 
-        public void RemoverItem(int posicao)
+        public void RemoverItemDoContainer(int posicao)
         {
             ValidarPosicao(posicao);
 
@@ -101,7 +101,7 @@ namespace Domain.Models
             return true;
         }
 
-        public void LimparContainer() => ResetarItens(itemsLength);
+        public void LimparContainer() => ResetarContainer(itemsLength);
 
         public void LimparContainer(int numAndar, int numContainer)
         {

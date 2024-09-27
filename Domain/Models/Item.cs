@@ -105,7 +105,7 @@ namespace Domain.Models
 
             Container? container = new Container().RetornarContainer(numAndar, numContainer, arrAndares);
 
-            container?.RemoverItem(posicao);
+            container?.RemoverItemDoContainer(posicao);
         }
     }
 }

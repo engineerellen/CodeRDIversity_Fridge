@@ -57,7 +57,7 @@ namespace GeladeiraTeste.ModelsTest
         {
             Item item = new Item() { Descricao = "leite", IdItem = 1 };
             container.AdicionarItem(0, item);
-            container.RemoverItem(0);
+            container.RemoverItemDoContainer(0);
 
             Assert.Equal(container?.Items[0].IdItem, 0);
         }
@@ -65,7 +65,7 @@ namespace GeladeiraTeste.ModelsTest
         [Fact]
         public void RemoverItem_Exception_Test()
         {
-            Assert.Throws<Exception>(() => container.RemoverItem(0));
+            Assert.Throws<Exception>(() => container.RemoverItemDoContainer(0));
         }
 
         [Fact]
